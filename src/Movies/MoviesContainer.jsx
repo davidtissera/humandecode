@@ -5,10 +5,10 @@ import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import { useTheme } from '@material-ui/core';
 import Table from '../shared/Components/Table';
-import LoadingBox from '../shared/Components/LoadingBox';
 import { getData, useSetApiDataToState } from '../shared/backend';
 import RatingStars from '../shared/Components/RatingStars';
 import Typography from '@material-ui/core/Typography'
+import ErrorLoadingBox from '../shared/Components/ErrorLoadingBox';
 
 const orderMoviesByPopularity = (movies) => {
   if (!movies) return [];
@@ -19,14 +19,44 @@ const orderMoviesByPopularity = (movies) => {
   });
 };
 
+const tableColumns = [
+  { Header: 'Title', accessor: 'title' },
+  { Header: 'Popularity', accessor: 'popularity' },
+  { Header: 'Release date', accessor: 'release_date' },
+  {
+    Header: 'Poster',
+    accessor: 'poster_path',
+    Cell: (row) => (
+      row.poster_path ? (
+        <img
+          src={`https://image.tmdb.org/t/p/w500${row.poster_path}`}
+          width="100px"
+          height="100px"
+          alt={`${row.title} poster`}
+        />
+      ) : null
+    ),
+  },
+  {
+    Header: 'Rating',
+    accessor: 'vote_average',
+    // Cell: (row) => (
+    //   <RatingStars rating={Math.floor(+row.vote_average)} />
+    // ),
+  }
+];
+
 const Movies = () => {
   const theme = useTheme();
   const [filter, setFilter] = useState({
     searchBarMovie: '',
     rating: 0,
   });
+  const queryParams = {
+    query: filter.searchBarMovie,
+  };
   const [moviesSearch] = useSetApiDataToState({
-    promise: getData({ url: '/search/movie', queryParams: { query: filter.searchBarMovie } }),
+    promise: getData({ url: '/search/movie', queryParams }),
     timeoutMsecs: 1000,
     deps: [filter],
   });
@@ -47,40 +77,6 @@ const Movies = () => {
   };
   const moviesFilteredByRating = filter.rating > 0 ? moviesSorted.filter((movie) => predicate(movie)) : moviesSorted;
 
-  if (moviesSearch.error)
-    return (
-      <div style={{ width: '100%', height: '100px', backgroundColor: 'red' }}>
-        {moviesSearch.error}
-      </div>
-    );
-
-  const columns = [
-    { Header: 'Title', accessor: 'title' },
-    { Header: 'Popularity', accessor: 'popularity' },
-    { Header: 'Release date', accessor: 'release_date' },
-    {
-      Header: 'Poster',
-      accessor: 'poster_path',
-      Cell: (row) => (
-        row.poster_path ? (
-          <img
-            src={`https://image.tmdb.org/t/p/w500${row.poster_path}`}
-            width="100px"
-            height="100px"
-            alt={`${row.title} poster`}
-          />
-        ) : null
-      ),
-    },
-    {
-      Header: 'Rating',
-      accessor: 'vote_average',
-      // Cell: (row) => (
-      //   <RatingStars rating={Math.floor(+row.vote_average)} />
-      // ),
-    }
-  ];
-
   const handleChangeSearchBar = (e) => {
     setFilter((prev) => ({ ...prev, searchBarMovie: e.target.value }));
   };
@@ -88,36 +84,34 @@ const Movies = () => {
   return (
     <Container maxWidth="md" style={{ padding: theme.spacing(4) }}>
       <Card elevation={8} style={{ padding: theme.spacing(2) }}>
-        <Grid container spacing={4}>
-          <Grid item xs={12}>
-            <TextField
-              label="Search movie"
-              placeholder="Search your favourite movie..."
-              variant="outlined"
-              fullWidth
-              autoFocus
-              value={filter.searchBarMovie}
-              onChange={handleChangeSearchBar}
-            />
+          <Grid container spacing={4}>
+            <Grid item xs={12}>
+              <TextField
+                label="Search movie"
+                placeholder="Search your favourite movie..."
+                variant="outlined"
+                fullWidth
+                autoFocus
+                value={filter.searchBarMovie}
+                onChange={handleChangeSearchBar}
+              />
+            </Grid>
+            <Grid item container xs={12} justify="flex-end" alignItems="center">
+              <Typography
+                variant="caption"
+                color="initial"
+                style={{ marginRight: theme.spacing(2) }}
+              >
+                Filter movie by rating star
+              </Typography>
+              <RatingStars rating={Math.floor(filter.rating)} setRating={(rat) => setFilter((prev) => ({ ...prev, rating: Math.floor(+rat) }))} />
+            </Grid>
+            <ErrorLoadingBox loading={moviesSearch.loading} error={moviesSearch.error} data={moviesFilteredByRating}>
+              <Grid item xs={12}>
+                <Table rows={moviesFilteredByRating} columns={tableColumns} />
+              </Grid>
+            </ErrorLoadingBox>
           </Grid>
-          <Grid item container xs={12} justify="flex-end" alignItems="center">
-            <Typography
-              variant="caption"
-              color="initial"
-              style={{ marginRight: theme.spacing(2) }}
-            >
-              Filter movie by rating star
-            </Typography>
-            <RatingStars rating={Math.floor(filter.rating)} setRating={(rat) => setFilter((prev) => ({ ...prev, rating: Math.floor(+rat) }))} />
-          </Grid>
-          <Grid item xs={12}>
-            {moviesSearch.loading ? (
-              <LoadingBox />
-            ) : (
-              <Table rows={moviesFilteredByRating} columns={columns} />
-            )}
-          </Grid>
-        </Grid>
       </Card>
     </Container>
   );

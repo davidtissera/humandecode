@@ -3,7 +3,6 @@ import MUITableHead from '@material-ui/core/TableHead';
 import MUITableBody from '@material-ui/core/TableBody';
 import MUITableCell from '@material-ui/core/TableCell';
 import MUITableRow from '@material-ui/core/TableRow';
-import NoDataBox from './NoDataBox';
 
 const TableCell = ({ row, column }) => {
   if (column.Cell && column.accessor) {
@@ -14,9 +13,6 @@ const TableCell = ({ row, column }) => {
 };
 
 const Table = ({ columns, rows, ...props }) => {
-
-  if (rows.length === 0) return <NoDataBox />;
-
   return (
     <MUITable {...props}>
       <MUITableHead>
