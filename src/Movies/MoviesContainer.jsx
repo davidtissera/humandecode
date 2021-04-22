@@ -4,11 +4,11 @@ import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import { useTheme } from '@material-ui/core';
-import Table from '../shared/Components/Table';
 import { getData, useSetApiDataToState } from '../shared/backend';
 import RatingStars from '../shared/Components/RatingStars';
 import Typography from '@material-ui/core/Typography'
 import ErrorLoadingBox from '../shared/Components/ErrorLoadingBox';
+import MoviesGridList from './MoviesGridList';
 
 const orderMoviesByPopularity = (movies) => {
   if (!movies) return [];
@@ -19,18 +19,19 @@ const orderMoviesByPopularity = (movies) => {
   });
 };
 
-const ratingFilterPredicate = (rating, movie, max = 9) => {
-  const ranges = Array.from({ length: max }, (v, k) => k);
-  let bool = false;
-  ranges.forEach((range, idx) => {
-    if (rating > range && rating <= range + 2 && movie.vote_average > range && movie.vote_average <= range + 2) {
-      console.log(range);
-      console.log(range + 2);
-      bool = true;
-    }
-  });
-
-  return bool;
+// TODO: Refactor
+const ratingFilterPredicate = (rating, movie) => {
+  if (rating > 0 && rating <= 2) {
+    return movie.vote_average >= 0 && movie.vote_average <= 2;
+  } else if (rating >= 2 && rating <= 4) {
+    return movie.vote_average >= 2 && movie.vote_average <= 4
+  } else if (rating >= 4 && rating <= 6) {
+    return movie.vote_average >= 4 && movie.vote_average <= 6
+  } else if (rating >= 6 && rating <= 8) {
+    return movie.vote_average >= 6 && movie.vote_average <= 8;
+  } else if (rating >= 8 && rating <= 10) {
+    return movie.vote_average >= 8 && movie.vote_average <= 10;
+  }
 };
 
 const tableColumns = [
@@ -86,36 +87,39 @@ const Movies = () => {
   };
 
   return (
-    <Container maxWidth="md" style={{ padding: theme.spacing(4) }}>
-      <Card elevation={8} style={{ padding: theme.spacing(2) }}>
-          <Grid container spacing={4}>
-            <Grid item xs={12}>
-              <TextField
-                label="Search movie"
-                placeholder="Search your favourite movie..."
-                variant="outlined"
-                fullWidth
-                autoFocus
-                value={filter.searchBarMovie}
-                onChange={handleChangeSearchBar}
-              />
-            </Grid>
-            <Grid item container xs={12} justify="flex-end" alignItems="center">
-              <Typography
-                variant="caption"
-                color="initial"
-                style={{ marginRight: theme.spacing(2) }}
-              >
-                Filter movie by rating star
-              </Typography>
-              <RatingStars rating={Math.floor(filter.rating)} setRating={(rat) => setFilter((prev) => ({ ...prev, rating: Math.floor(+rat) }))} />
-            </Grid>
-            <ErrorLoadingBox loading={moviesSearch.loading} error={moviesSearch.error} data={moviesFilteredByRating}>
-              <Grid item xs={12}>
-                <Table rows={moviesFilteredByRating} columns={tableColumns} />
-              </Grid>
-            </ErrorLoadingBox>
+    <Container maxWidth="lg" style={{ padding: theme.spacing(4) }}>
+      <Card elevation={0} style={{ padding: theme.spacing(2) }}>
+        <Grid container spacing={4}>
+          <Grid item xs={12}>
+            <Typography variant="h4">Amazing movie finder</Typography>
           </Grid>
+          <Grid item xs={12}>
+            <TextField
+              label="Search movie"
+              placeholder="Search your favourite movie..."
+              variant="outlined"
+              fullWidth
+              autoFocus
+              value={filter.searchBarMovie}
+              onChange={handleChangeSearchBar}
+            />
+          </Grid>
+          <Grid item container xs={12} justify="flex-end" alignItems="center">
+            <Typography
+              variant="caption"
+              color="initial"
+              style={{ marginRight: theme.spacing(2) }}
+            >
+              Filter movie by rating star
+            </Typography>
+            <RatingStars rating={Math.floor(filter.rating)} setRating={(rat) => setFilter((prev) => ({ ...prev, rating: Math.floor(+rat) }))} />
+          </Grid>
+          <ErrorLoadingBox loading={moviesSearch.loading} error={moviesSearch.error} data={moviesFilteredByRating}>
+            <Grid item xs={12}>
+              <MoviesGridList movies={moviesFilteredByRating} />
+            </Grid>
+          </ErrorLoadingBox>
+        </Grid>
       </Card>
     </Container>
   );
