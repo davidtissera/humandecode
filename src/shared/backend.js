@@ -44,7 +44,7 @@ const getData = async ({ url, queryParams }) => {
   return apiCommunication({ url, queryParams });
 };
 
-const useSetApiDataToState = ({ promise, deps }) => {
+const useSetApiDataToState = ({ promise, deps, timeoutMsecs }) => {
   const initialState = {
     data: [],
     loading: false,
@@ -55,15 +55,18 @@ const useSetApiDataToState = ({ promise, deps }) => {
   useEffect(() => {
     setState({ ...state, loading: true });
     promise.then((response) => {
-      console.log(response);
-      setState({ data: response, loading: false, error: '' })
+      const setResponseToState = () => {
+        setState({ data: response, loading: false, error: '' })
+      };
+      // setting a timeout for UX
+      if (timeoutMsecs > 0) setTimeout(() => setResponseToState(), timeoutMsecs);
+      else setResponseToState();
     });
     promise.catch((error) => {
-      console.log(error);
       setState({ data: [], loading: false, error });
     });
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [deps]);
+  }, deps);
 
   return [state, setState];
 };

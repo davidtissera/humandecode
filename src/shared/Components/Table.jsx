@@ -1,33 +1,41 @@
-import React from 'react';
+import MUITable from '@material-ui/core/Table';
+import MUITableHead from '@material-ui/core/TableHead';
+import MUITableBody from '@material-ui/core/TableBody';
+import MUITableCell from '@material-ui/core/TableCell';
+import MUITableRow from '@material-ui/core/TableRow';
+import NoDataBox from './NoDataBox';
 
 const TableCell = ({ row, column }) => {
   if (column.Cell && column.accessor) {
-    return <td>{column.Cell(row)}</td>
+    return <MUITableCell>{column.Cell(row)}</MUITableCell>
   } else if (column.accessor) {
-    return <td>{row[column.accessor]}</td>
+    return <MUITableCell>{row[column.accessor]}</MUITableCell>
   } else return null;
 };
 
-const Table = ({ columns, rows }) => {
+const Table = ({ columns, rows, ...props }) => {
+
+  if (rows.length === 0) return <NoDataBox />;
+
   return (
-    <table>
-      <thead>
-        <tr>
+    <MUITable {...props}>
+      <MUITableHead>
+        <MUITableRow>
           {columns.map((column, idx) => (
             <th key={JSON.stringify(column)}>{column.Header}</th>
           ))}
-        </tr>
-      </thead>
-      <tbody>
+        </MUITableRow>
+      </MUITableHead>
+      <MUITableBody>
         {rows.map((row, idx) => (
-          <tr>
+          <MUITableRow>
             {columns.map((column) => (
               <TableCell column={column} row={row} />
             ))}
-          </tr>
+          </MUITableRow>
         ))}
-      </tbody>
-    </table>
+      </MUITableBody>
+    </MUITable>
   );
 };
 
