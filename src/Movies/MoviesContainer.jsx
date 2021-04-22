@@ -19,6 +19,20 @@ const orderMoviesByPopularity = (movies) => {
   });
 };
 
+const ratingFilterPredicate = (rating, movie, max = 9) => {
+  const ranges = Array.from({ length: max }, (v, k) => k);
+  let bool = false;
+  ranges.forEach((range, idx) => {
+    if (rating > range && rating <= range + 2 && movie.vote_average > range && movie.vote_average <= range + 2) {
+      console.log(range);
+      console.log(range + 2);
+      bool = true;
+    }
+  });
+
+  return bool;
+};
+
 const tableColumns = [
   { Header: 'Title', accessor: 'title' },
   { Header: 'Popularity', accessor: 'popularity' },
@@ -63,17 +77,7 @@ const Movies = () => {
 
   const moviesSorted = orderMoviesByPopularity(moviesSearch.data.results);
   const predicate = (movie) => {
-    if (filter.rating > 0 && filter.rating <= 2) {
-      return movie.vote_average > 0 && movie.vote_average <= 2;
-    } else if (filter.rating > 2 && filter.rating <= 4) {
-      return movie.vote_average > 2 && movie.vote_average <= 4
-    } else if (filter.rating > 4 && filter.rating <= 6) {
-      return movie.vote_average > 4 && movie.vote_average <= 6
-    } else if (filter.rating > 6 && filter.rating <= 8) {
-      return movie.vote_average > 6 && movie.vote_average <= 8;
-    } else if (filter.rating > 8 && filter.rating <= 10) {
-      return movie.vote_average > 8 && movie.vote_average <= 10;
-    }
+    return ratingFilterPredicate(filter.rating, movie, 9);
   };
   const moviesFilteredByRating = filter.rating > 0 ? moviesSorted.filter((movie) => predicate(movie)) : moviesSorted;
 
