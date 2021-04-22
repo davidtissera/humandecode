@@ -28,9 +28,9 @@ const Table = ({ columns, rows, ...props }) => {
       </MUITableHead>
       <MUITableBody>
         {rows.map((row, idx) => (
-          <MUITableRow>
+          <MUITableRow key={JSON.stringify(row)}>
             {columns.map((column) => (
-              <TableCell column={column} row={row} />
+              <TableCell key={JSON.stringify(column)} column={column} row={row} />
             ))}
           </MUITableRow>
         ))}

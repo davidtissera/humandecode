@@ -32,7 +32,20 @@ const Movies = () => {
   });
 
   const moviesSorted = orderMoviesByPopularity(moviesSearch.data.results);
-  const moviesFilteredByRating = filter.rating > 0 ? moviesSorted.filter((movie) => Math.floor(movie.vote_average) === filter.rating) : moviesSorted;
+  const predicate = (movie) => {
+    if (filter.rating > 0 && filter.rating <= 2) {
+      return movie.vote_average > 0 && movie.vote_average <= 2;
+    } else if (filter.rating > 2 && filter.rating <= 4) {
+      return movie.vote_average > 2 && movie.vote_average <= 4
+    } else if (filter.rating > 4 && filter.rating <= 6) {
+      return movie.vote_average > 4 && movie.vote_average <= 6
+    } else if (filter.rating > 6 && filter.rating <= 8) {
+      return movie.vote_average > 6 && movie.vote_average <= 8;
+    } else if (filter.rating > 8 && filter.rating <= 10) {
+      return movie.vote_average > 8 && movie.vote_average <= 10;
+    }
+  };
+  const moviesFilteredByRating = filter.rating > 0 ? moviesSorted.filter((movie) => predicate(movie)) : moviesSorted;
 
   if (moviesSearch.error)
     return (
@@ -62,9 +75,9 @@ const Movies = () => {
     {
       Header: 'Rating',
       accessor: 'vote_average',
-      Cell: (row) => (
-        <RatingStars rating={row.vote_average} />
-      ),
+      // Cell: (row) => (
+      //   <RatingStars rating={Math.floor(+row.vote_average)} />
+      // ),
     }
   ];
 
@@ -95,7 +108,7 @@ const Movies = () => {
             >
               Filter movie by rating star
             </Typography>
-            <RatingStars rating={filter.rating} setRating={(rat) => setFilter((prev) => ({ ...prev, rating: rat }))} />
+            <RatingStars rating={Math.floor(filter.rating)} setRating={(rat) => setFilter((prev) => ({ ...prev, rating: Math.floor(+rat) }))} />
           </Grid>
           <Grid item xs={12}>
             {moviesSearch.loading ? (
