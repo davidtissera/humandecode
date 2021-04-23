@@ -29,7 +29,7 @@ const ErrorLoadingBox = ({ data, loading, error, children }) => {
 };
 
 ErrorLoadingBox.propTypes = {
-  data: PropTypes.oneOf([PropTypes.object, PropTypes.array]),
+  data: PropTypes.any,
   loading: PropTypes.bool,
   error: PropTypes.string,
   children: PropTypes.node.isRequired,

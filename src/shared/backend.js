@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
 
 const apiKey = '666af153f2440476bfb30040d7b9d152';
+const imagePath = 'https://image.tmdb.org/t/p/w500';
 
 export const appendQueryParams = (queryParams = {}) => {
-  const formattedQueryParameters = Object.entries(queryParams).map((queryParam) => {
-    const [key, value] = queryParam;
-    if (Array.isArray(value)) {
-      const joinedValues = value.join(',');
-      return `${key}=[${joinedValues}]`;
-    } else {
-      return value ? `${key}=${value}` : `${key}=''`;
+  const formattedQueryParameters = Object.entries(queryParams).map(
+    (queryParam) => {
+      const [key, value] = queryParam;
+      if (Array.isArray(value)) {
+        const joinedValues = value.join(',');
+        return `${key}=[${joinedValues}]`;
+      } else {
+        return value ? `${key}=${value}` : `${key}=''`;
+      }
     }
-  });
+  );
   return formattedQueryParameters.join('&');
 };
 
@@ -25,10 +28,10 @@ const apiCommunication = async ({ url, queryParams, additionalConfig }) => {
   const config = {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     ...additionalConfig,
-  }
+  };
   const response = await fetch(urlComplete, config);
   try {
     const json = await response.json();
@@ -56,23 +59,19 @@ const useSetApiDataToState = ({ promise, deps, timeoutMsecs }) => {
     setState({ ...state, loading: true });
     promise.then((response) => {
       const setResponseToState = () => {
-        setState({ data: response, loading: false, error: '' })
+        setState({ data: response, loading: false, error: '' });
       };
       // setting a timeout for UX
-      if (timeoutMsecs > 0) setTimeout(() => setResponseToState(), timeoutMsecs);
+      if (timeoutMsecs > 0)
+        setTimeout(() => setResponseToState(), timeoutMsecs);
       else setResponseToState();
     });
     promise.catch((error) => {
       setState({ data: [], loading: false, error });
     });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
   return [state, setState];
 };
 
-export { 
-  getData,
-  useSetApiDataToState,
-};
-
+export { getData, useSetApiDataToState, imagePath };

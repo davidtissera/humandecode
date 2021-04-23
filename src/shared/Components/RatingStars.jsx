@@ -35,7 +35,6 @@ const RatingStars = ({ rating, setRating }) => {
       }
     });
     setStarsState(stars);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rating]);
 
 
@@ -73,7 +72,7 @@ const RatingStars = ({ rating, setRating }) => {
 };
 
 RatingStars.propTypes = {
-  rating: PropTypes.oneOf([0,1,2,3,4,5,6,7,8,9,10]),
+  rating: PropTypes.number,
   setRating: PropTypes.func,
 };
 

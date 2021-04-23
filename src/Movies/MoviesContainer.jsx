@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import { useTheme } from '@material-ui/core';
 import { getData, useSetApiDataToState } from '../shared/backend';
 import RatingStars from '../shared/Components/RatingStars';
-import Typography from '@material-ui/core/Typography'
+import Typography from '@material-ui/core/Typography';
 import ErrorLoadingBox from '../shared/Components/ErrorLoadingBox';
 import MoviesGridList from './MoviesGridList';
 
@@ -24,9 +24,9 @@ const ratingFilterPredicate = (rating, movie) => {
   if (rating > 0 && rating <= 2) {
     return movie.vote_average >= 0 && movie.vote_average <= 2;
   } else if (rating >= 2 && rating <= 4) {
-    return movie.vote_average >= 2 && movie.vote_average <= 4
+    return movie.vote_average >= 2 && movie.vote_average <= 4;
   } else if (rating >= 4 && rating <= 6) {
-    return movie.vote_average >= 4 && movie.vote_average <= 6
+    return movie.vote_average >= 4 && movie.vote_average <= 6;
   } else if (rating >= 6 && rating <= 8) {
     return movie.vote_average >= 6 && movie.vote_average <= 8;
   } else if (rating >= 8 && rating <= 10) {
@@ -41,16 +41,18 @@ const tableColumns = [
   {
     Header: 'Poster',
     accessor: 'poster_path',
-    Cell: (row) => (
-      row.poster_path ? (
-        <img
-          src={`https://image.tmdb.org/t/p/w500${row.poster_path}`}
-          width="100px"
-          height="100px"
-          alt={`${row.title} poster`}
-        />
-      ) : null
-    ),
+    Cell(row) {
+      return (
+        row.poster_path ? (
+          <img
+            src={`https://image.tmdb.org/t/p/w500${row.poster_path}`}
+            width="100px"
+            height="100px"
+            alt={`${row.title} poster`}
+          />
+        ) : null
+      );
+    },
   },
   {
     Header: 'Rating',
@@ -58,7 +60,7 @@ const tableColumns = [
     // Cell: (row) => (
     //   <RatingStars rating={Math.floor(+row.vote_average)} />
     // ),
-  }
+  },
 ];
 
 const Movies = () => {
@@ -80,7 +82,10 @@ const Movies = () => {
   const predicate = (movie) => {
     return ratingFilterPredicate(filter.rating, movie, 9);
   };
-  const moviesFilteredByRating = filter.rating > 0 ? moviesSorted.filter((movie) => predicate(movie)) : moviesSorted;
+  const moviesFilteredByRating =
+    filter.rating > 0
+      ? moviesSorted.filter((movie) => predicate(movie))
+      : moviesSorted;
 
   const handleChangeSearchBar = (e) => {
     setFilter((prev) => ({ ...prev, searchBarMovie: e.target.value }));
@@ -112,9 +117,18 @@ const Movies = () => {
             >
               Filter movie by rating star
             </Typography>
-            <RatingStars rating={Math.floor(filter.rating)} setRating={(rat) => setFilter((prev) => ({ ...prev, rating: Math.floor(+rat) }))} />
+            <RatingStars
+              rating={Math.floor(filter.rating)}
+              setRating={(rat) =>
+                setFilter((prev) => ({ ...prev, rating: Math.floor(+rat) }))
+              }
+            />
           </Grid>
-          <ErrorLoadingBox loading={moviesSearch.loading} error={moviesSearch.error} data={moviesFilteredByRating}>
+          <ErrorLoadingBox
+            loading={moviesSearch.loading}
+            error={moviesSearch.error}
+            data={moviesFilteredByRating}
+          >
             <Grid item xs={12}>
               <MoviesGridList movies={moviesFilteredByRating} />
             </Grid>

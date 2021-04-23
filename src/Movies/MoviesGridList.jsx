@@ -1,7 +1,31 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Grid } from '@material-ui/core';
+import { Grid, makeStyles } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
+import Card from '@material-ui/core/Card';
 import RatingStars from '../shared/Components/RatingStars';
+import { imagePath } from '../shared/backend';
+
+const useStyles = props => makeStyles((theme) => ({
+  posterBox: {
+  },
+  ratingStars: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+  },
+  card: {
+    position: 'relative',
+    width: '100%',
+    height: '350px',
+    backgroundSize: 'cover',
+    cursor: 'pointer',
+    backgroundImage: `url(${imagePath}${props.imageSrc})`,
+    '&:hover': {
+      backgroundImage: `linear-gradient(180deg, rgba(234,234,234,0) 70%, rgba(0,0,0,0.2) 90%), url(${imagePath}${props.imageSrc})`,
+    },
+  },
+}));
 
 const MoviesGridList = ({ movies }) => {
   return (
@@ -12,28 +36,13 @@ const MoviesGridList = ({ movies }) => {
             key={JSON.stringify(movie)}
             item
             container
-            xs={12}
-            sm={6}
-            md={4}
-            lg={3}
+            xs={6}
+            sm={4}
+            md={3}
             justify="center"
             alignItems="center"
           >
-            <Box
-              position="relative"
-              width="100%"
-              height="100%"
-            >
-              <img
-                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                alt={movie.title}
-                width="100%"
-                height="100%"
-              />
-              <Box position="absolute" bottom={10} right={10}>
-                <RatingStars rating={movie.vote_average} />
-              </Box>
-            </Box>
+            <MoviePoster movie={movie} />
           </Grid>
         ) : null
       )}
@@ -41,7 +50,27 @@ const MoviesGridList = ({ movies }) => {
   );
 };
 
+const MoviePoster = ({ movie }) => {
+  const classes = useStyles({ imageSrc: movie.poster_path })();
+
+  return (
+    <Card
+      classes={{ root: classes.card }}
+      raised
+      elevation={4}
+    >
+      <Box classes={{ root: classes.ratingStars }}>
+        <RatingStars rating={movie.vote_average} />
+      </Box>
+    </Card>
+  );
+};
+
 MoviesGridList.propTypes = {
+  movies: PropTypes.array,
+};
+
+MoviePoster.propTypes = {
   movie: PropTypes.object,
 };
 
