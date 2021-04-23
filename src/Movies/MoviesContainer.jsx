@@ -34,35 +34,6 @@ const ratingFilterPredicate = (rating, movie) => {
   }
 };
 
-const tableColumns = [
-  { Header: 'Title', accessor: 'title' },
-  { Header: 'Popularity', accessor: 'popularity' },
-  { Header: 'Release date', accessor: 'release_date' },
-  {
-    Header: 'Poster',
-    accessor: 'poster_path',
-    Cell(row) {
-      return (
-        row.poster_path ? (
-          <img
-            src={`https://image.tmdb.org/t/p/w500${row.poster_path}`}
-            width="100px"
-            height="100px"
-            alt={`${row.title} poster`}
-          />
-        ) : null
-      );
-    },
-  },
-  {
-    Header: 'Rating',
-    accessor: 'vote_average',
-    // Cell: (row) => (
-    //   <RatingStars rating={Math.floor(+row.vote_average)} />
-    // ),
-  },
-];
-
 const Movies = () => {
   const theme = useTheme();
   const [filter, setFilter] = useState({
@@ -94,45 +65,46 @@ const Movies = () => {
   return (
     <Container maxWidth="lg" style={{ padding: theme.spacing(4) }}>
       <Card elevation={0} style={{ padding: theme.spacing(2) }}>
-        <Grid container spacing={4}>
+        <Grid container spacing={6}>
           <Grid item xs={12}>
             <Typography variant="h4">Amazing movie finder</Typography>
           </Grid>
-          <Grid item xs={12}>
-            <TextField
-              label="Search movie"
-              placeholder="Search your favourite movie..."
-              variant="outlined"
-              fullWidth
-              autoFocus
-              value={filter.searchBarMovie}
-              onChange={handleChangeSearchBar}
-            />
-          </Grid>
-          <Grid item container xs={12} justify="flex-end" alignItems="center">
-            <Typography
-              variant="caption"
-              color="initial"
-              style={{ marginRight: theme.spacing(2) }}
-            >
-              Filter movie by rating star
-            </Typography>
-            <RatingStars
-              rating={Math.floor(filter.rating)}
-              setRating={(rat) =>
-                setFilter((prev) => ({ ...prev, rating: Math.floor(+rat) }))
-              }
-            />
-          </Grid>
-          <ErrorLoadingBox
-            loading={moviesSearch.loading}
-            error={moviesSearch.error}
-            data={moviesFilteredByRating}
-          >
+          <Grid item container xs={12} spacing={2}>
             <Grid item xs={12}>
-              <MoviesGridList movies={moviesFilteredByRating} />
+              <TextField
+                label="Search movie"
+                placeholder="Search your favourite movie..."
+                variant="outlined"
+                fullWidth
+                autoFocus
+                value={filter.searchBarMovie}
+                onChange={handleChangeSearchBar}
+              />
             </Grid>
-          </ErrorLoadingBox>
+            <Grid item container xs={12} justify="flex-end" alignItems="center">
+              <Typography
+                variant="caption"
+                style={{ marginRight: theme.spacing(2) }}
+              >
+                Filter movie by rating star
+              </Typography>
+              <RatingStars
+                rating={Math.floor(filter.rating)}
+                setRating={(rat) =>
+                  setFilter((prev) => ({ ...prev, rating: Math.floor(+rat) }))
+                }
+              />
+            </Grid>
+          </Grid>
+          <Grid item xs={12}>
+            <ErrorLoadingBox
+              loading={moviesSearch.loading}
+              error={moviesSearch.error}
+              data={moviesFilteredByRating}
+            >
+              <MoviesGridList movies={moviesFilteredByRating} />
+            </ErrorLoadingBox>
+          </Grid>
         </Grid>
       </Card>
     </Container>
