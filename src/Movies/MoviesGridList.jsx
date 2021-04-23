@@ -5,7 +5,7 @@ import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import RatingStars from '../shared/Components/RatingStars';
 import { imagePath } from '../shared/backend';
-import { SettingsPhoneSharp } from '@material-ui/icons';
+import { useBreakpoint } from '../shared/tools';
 
 const useStyles = props => makeStyles((theme) => ({
   posterBox: {
@@ -95,34 +95,59 @@ const MoviePoster = ({ movie, ...props }) => {
 
 const MovieDetail = ({ movie, handleClickGoBackToMovies }) => {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const theme = useTheme();
+  const { value: breakpoint } = useBreakpoint();
+  console.log(movie);
   if (!movie) return null;
 
   return (
-    <Box display="flex" width="100%" height="50vw" position="relative">
-      <Box width="40vw" mr="5vw">
-        <MoviePoster movie={movie} style={{ height: '50vw' }} />
-      </Box>
-      <Box width="calc(100% - 40vw)" overflow="hidden" height="40vw">
-        <Typography variant="h5">{movie.title}</Typography>
-        <Box mb={2} mt={1}>
-          <Typography variant="caption">
-            Released on{' '}
-            <b>
-              {new Date(movie.release_date).toLocaleDateString(
-                'en-US',
-                options
-              )}
-            </b>
-          </Typography>
-        </Box>
-        <Typography variant="subtitle1">
-          <b>Overview</b>
-        </Typography>
-        <Typography variant="body2" color="textSecondary" paragraph>
-          {movie.overview}
-        </Typography>
-      </Box>
-    </Box>
+    <Grid container spacing={4}>
+      <Grid item xs={12}>
+        <Button
+          variant="contained"
+          disableElevation
+          color="primary"
+          style={{ textTransform: 'none' }}
+          onClick={handleClickGoBackToMovies}
+        >
+          ← Go back to movies list
+        </Button>
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <MoviePoster
+          movie={movie}
+          style={{ height: breakpoint < 2 ? '100vw' : '50vw' }}
+        />
+      </Grid>
+      <Grid item xs={12} md={6}>
+        <Card
+          style={{ height: breakpoint < 2 ? '100%' : '50vw' }}
+          raised
+          elevation={2}
+        >
+          <Box padding={theme.spacing(0.3)} width="inherit" height="inherit">
+            <Typography variant="h5">{movie.title}</Typography>
+            <Box mb={2} mt={1}>
+              <Typography variant="caption">
+                Released on{' '}
+                <b>
+                  {new Date(movie.release_date).toLocaleDateString(
+                    'en-US',
+                    options
+                  )}
+                </b>
+              </Typography>
+            </Box>
+            <Typography variant="subtitle1">
+              <b>Overview</b>
+            </Typography>
+            <Typography variant="body2" color="textSecondary" paragraph>
+              {movie.overview}
+            </Typography>
+          </Box>
+        </Card>
+      </Grid>
+    </Grid>
   );
 };
 
