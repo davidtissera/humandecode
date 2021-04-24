@@ -17,7 +17,7 @@ const ErrorSadFace = () => {
   return (
     <Box display="flex" alignItems="center" justifyContent="center" width="100%" height="100%" flexDirection="column">
       <SadFaceIcon fontSize="large" />
-      <Typography variant="h5">
+      <Typography variant="h6" style={{ marginTop: '20px' }}>
         No information available
       </Typography>
     </Box>
@@ -32,7 +32,7 @@ const ErrorLoadingBox = ({ data, loading, error, children }) => {
       alignItems="center"
       justifyContent="center"
       width="100%"
-      height="500px"
+      height="50vh"
     >
       {loading && <CircularProgress size={50} color="primary" />}
       {!loading && error && <Alert severity="error" variant="filled">{error}</Alert>}
