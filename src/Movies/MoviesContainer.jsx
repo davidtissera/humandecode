@@ -3,7 +3,9 @@ import TextField from '@material-ui/core/TextField';
 import Container from '@material-ui/core/Container';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
 import { useTheme } from '@material-ui/core';
+import SearchIcon from '@material-ui/icons/Search';
 import { getData, useSetApiDataToState } from '../shared/backend';
 import RatingStars from '../shared/Components/RatingStars';
 import Typography from '@material-ui/core/Typography';
@@ -45,7 +47,7 @@ const Movies = () => {
   };
   const [moviesSearch] = useSetApiDataToState({
     promise: getData({ url: '/search/movie', queryParams }),
-    timeoutMsecs: 1000,
+    timeoutMsecs: 3000,
     deps: [filter],
   });
 
@@ -67,14 +69,17 @@ const Movies = () => {
       <Card elevation={0} style={{ padding: theme.spacing(2), backgroundColor: '#252525' }} variant="outlined">
         <Grid container spacing={6}>
           <Grid item xs={12}>
-            <Typography variant="h4">Amazing movie finder</Typography>
+            <Typography variant="h5">Amazing movie finder 🎬</Typography>
           </Grid>
           <Grid item container xs={12} spacing={2}>
             <Grid item xs={12}>
               <TextField
-                label="Search movie"
-                placeholder="Search your favourite movie..."
+                label="Search..."
+                placeholder="Titles, persons, genres..."
                 variant="filled"
+                InputProps={{
+                  endAdornment: <SearchIcon />
+                }}
                 fullWidth
                 autoFocus
                 value={filter.searchBarMovie}
