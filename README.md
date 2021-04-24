@@ -18,7 +18,7 @@ $ git clone git@github.com:davidtissera1/humandecode.git // SSH
 ```
 > Go to project's folder
 ```code
-$ cd humandecode
+$ cd humandecode // e.g: ~/Desktop/humandecode
 ```
 > And finally type this command and hit enter to start the App.
 ```code
