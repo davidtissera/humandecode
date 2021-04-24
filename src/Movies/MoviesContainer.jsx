@@ -47,7 +47,7 @@ const Movies = () => {
   };
   const [moviesSearch] = useSetApiDataToState({
     promise: getData({ url: '/search/movie', queryParams }),
-    timeoutMsecs: 3000,
+    timeoutMsecs: 2000,
     deps: [filter],
   });
 
@@ -91,7 +91,7 @@ const Movies = () => {
                 variant="caption"
                 style={{ marginRight: theme.spacing(2) }}
               >
-                Filter movie by rating star
+                Filter movies by rating
               </Typography>
               <RatingStars
                 rating={Math.floor(filter.rating)}

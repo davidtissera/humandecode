@@ -47,7 +47,7 @@ const getData = async ({ url, queryParams }) => {
   return apiCommunication({ url, queryParams });
 };
 
-const useSetApiDataToState = ({ promise, deps, timeoutMsecs }) => {
+const useSetApiDataToState = ({ promise, deps = [], timeoutMsecs }) => {
   const initialState = {
     data: [],
     loading: false,
