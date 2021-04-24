@@ -71,22 +71,20 @@ const Movies = () => {
           <Grid item xs={12}>
             <Typography variant="h5">Amazing movie finder 🎬</Typography>
           </Grid>
-          <Grid item container xs={12} spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                label="Search..."
-                placeholder="Titles, persons, genres..."
-                variant="filled"
-                InputProps={{
-                  endAdornment: <SearchIcon />
-                }}
-                fullWidth
-                autoFocus
-                value={filter.searchBarMovie}
-                onChange={handleChangeSearchBar}
-              />
-            </Grid>
-            <Grid item container xs={12} justify="flex-end" alignItems="center">
+          <Grid item xs={12}>
+            <TextField
+              label="Search..."
+              placeholder="Titles, persons, genres..."
+              variant="filled"
+              InputProps={{
+                endAdornment: <SearchIcon />
+              }}
+              fullWidth
+              autoFocus
+              value={filter.searchBarMovie}
+              onChange={handleChangeSearchBar}
+            />
+            <Box width="100%" display="flex" justifyContent="flex-end" mt={2}>
               <Typography
                 variant="caption"
                 style={{ marginRight: theme.spacing(2) }}
@@ -99,7 +97,7 @@ const Movies = () => {
                   setFilter((prev) => ({ ...prev, rating: Math.floor(+rat) }))
                 }
               />
-            </Grid>
+            </Box>
           </Grid>
           <Grid item xs={12}>
             <ErrorLoadingBox
