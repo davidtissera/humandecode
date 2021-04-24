@@ -51,7 +51,8 @@ const Movies = () => {
     deps: [filter],
   });
 
-  const moviesSorted = orderMoviesByPopularity(moviesSearch.data.results);
+  const moviesSorted = orderMoviesByPopularity(moviesSearch.data.results)
+    .filter((movie) => movie.poster_path);
   const predicate = (movie) => {
     return ratingFilterPredicate(filter.rating, movie, 9);
   };
