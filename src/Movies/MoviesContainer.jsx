@@ -69,7 +69,7 @@ const Movies = () => {
       <Card elevation={0} style={{ padding: theme.spacing(2), backgroundColor: '#252525' }} variant="outlined">
         <Grid container spacing={6}>
           <Grid item xs={12}>
-            <Typography variant="h5">Amazing movie finder 🎬</Typography>
+            <Typography variant="h5">🎬 Movie Finder</Typography>
           </Grid>
           <Grid item xs={12}>
             <TextField

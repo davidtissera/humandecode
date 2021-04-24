@@ -2,6 +2,18 @@ import { useEffect, useState } from 'react';
 import { throttle } from 'lodash';
 import { useTheme } from '@material-ui/core';
 
+const predicateFalsy = (v) => !v; // null, undefined, empty string or 0.
+const predicateNullUndefEmptyString = (v) => (v === null || v === undefined || v === '') ? true : false;
+const predicateEmpty = (data) => {
+  if (Array.isArray(data) && data.length <= 0) return true;
+  if (typeof data === 'object' && Object.entries(data).length <= 0) return true;
+  return false;
+};
+
+const isEmpty = (data, predicate) => {
+  return predicate(data);
+};
+
 const useBreakpoint = () => {
   const theme = useTheme();
   /* eslint-disable-next-line consistent-return */
@@ -35,5 +47,9 @@ const useBreakpoint = () => {
 };
 
 export {
-  useBreakpoint
+  useBreakpoint,
+  isEmpty,
+  predicateFalsy,
+  predicateEmpty,
+  predicateNullUndefEmptyString,
 };
