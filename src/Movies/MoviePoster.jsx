@@ -9,12 +9,6 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const useStyles = (props) =>
   makeStyles((theme) => ({
-    card: {
-      position: 'relative',
-      height: '100%',
-      cursor: props.clickable && 'pointer',
-      zIndex: 9999,
-    },
     img: {
       position: 'relative',
       bottom: 0,
@@ -32,14 +26,20 @@ const BottomShadowBox = styled(Box)({
   top: 0,
 });
 
+export const MovieCard = styled(Card)({
+  position: 'relative',
+  height: '100%',
+  zIndex: 1000,
+});
+
 const MoviePoster = ({ movie, clickable, CardProps, ...props }) => {
   const classes = useStyles({ imageSrc: movie.poster_path, clickable })();
 
   return (
-    <Card
-      classes={{ root: classes.card }}
+    <MovieCard
       raised
       elevation={4}
+      style={{ cursor: clickable ? 'pointer' : 'default' }}
       {...CardProps}
     >
       <LazyLoadImage
@@ -50,11 +50,11 @@ const MoviePoster = ({ movie, clickable, CardProps, ...props }) => {
         height="100%"
         {...props}
       />
-      <Box position="absolute" bottom={10} right={10} zIndex={10000}>
+      <Box position="absolute" bottom={10} right={10} zIndex={1001}>
         <RatingStars rating={movie.vote_average} />
       </Box>
       <BottomShadowBox />
-    </Card>
+    </MovieCard>
   );
 };
 

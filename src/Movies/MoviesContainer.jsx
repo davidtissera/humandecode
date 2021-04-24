@@ -11,6 +11,8 @@ import RatingStars from '../shared/Components/RatingStars';
 import Typography from '@material-ui/core/Typography';
 import ErrorLoadingBox from '../shared/Components/ErrorLoadingBox';
 import MoviesGridList from './MoviesGridList';
+import { MovieCard } from './MoviePoster';
+import { Skeleton } from '@material-ui/lab';
 
 const orderMoviesByPopularity = (movies) => {
   if (!movies) return [];

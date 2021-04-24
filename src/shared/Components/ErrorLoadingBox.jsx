@@ -30,7 +30,7 @@ const ErrorLoadingBox = ({
   loading,
   error,
   children,
-  loadingSchema = <CircularProgress size={40} color="primary" />,
+  loadingSchema,
 }) => {
   const conditionError = error && !loading;
   const conditionDataLoaded = !isEmpty(data, predicateEmpty) && !loading;
@@ -39,7 +39,7 @@ const ErrorLoadingBox = ({
 
   return (
     <>
-      {conditionLoading && <ContentBox>{loadingSchema}</ContentBox>}
+      {conditionLoading && (loadingSchema || <ContentBox><CircularProgress size={40} color="primary" /></ContentBox>)}
       {conditionDataLoaded && <Box minHeight="51vh" width="100%">{children}</Box>}
       {conditionError && <ContentBox><Alert severity="error" variant="filled">{error}</Alert></ContentBox>}
       {conditionNoInformation && <ContentBox><ErrorSadFace /></ContentBox>}
