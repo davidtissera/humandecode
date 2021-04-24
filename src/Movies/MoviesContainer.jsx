@@ -64,7 +64,7 @@ const Movies = () => {
 
   return (
     <Container maxWidth="lg" style={{ padding: theme.spacing(4) }}>
-      <Card elevation={0} style={{ padding: theme.spacing(2) }}>
+      <Card elevation={0} style={{ padding: theme.spacing(2), backgroundColor: '#252525' }} variant="outlined">
         <Grid container spacing={6}>
           <Grid item xs={12}>
             <Typography variant="h4">Amazing movie finder</Typography>
@@ -74,7 +74,7 @@ const Movies = () => {
               <TextField
                 label="Search movie"
                 placeholder="Search your favourite movie..."
-                variant="outlined"
+                variant="filled"
                 fullWidth
                 autoFocus
                 value={filter.searchBarMovie}

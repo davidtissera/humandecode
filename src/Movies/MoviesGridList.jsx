@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, makeStyles, Slide, Grow, Typography, useTheme, Button } from '@material-ui/core';
+import { Grid, makeStyles, Slide, Typography, useTheme, Button, Divider } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import RatingStars from '../shared/Components/RatingStars';
 import { imageBaseUrl } from '../shared/backend';
 import { useBreakpoint } from '../shared/tools';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { ClassSharp } from '@material-ui/icons';
 
 const useStyles = (props) =>
   makeStyles((theme) => ({
@@ -121,16 +121,17 @@ const MovieDetail = ({ movie, handleClickGoBackToMovies }) => {
   if (!movie) return null;
 
   return (
-    <Grid container spacing={4}>
+    <Grid container spacing={2}>
       <Grid item xs={12}>
         <Button
-          variant="contained"
-          disableElevation
-          color="primary"
+          color="default"
           style={{ textTransform: 'none' }}
           onClick={handleClickGoBackToMovies}
+          startIcon={(
+            <ArrowBackIcon />
+          )}
         >
-          ← Go back to movies list
+          Go back
         </Button>
       </Grid>
       <Grid item container xs={12} justify="space-between">
@@ -144,10 +145,12 @@ const MovieDetail = ({ movie, handleClickGoBackToMovies }) => {
             raised
             elevation={2}
             variant="outlined"
+            square
             style={{ height: '100%', marginTop: breakpoint === 'xs' && theme.spacing(2) }}
           >
             <Box padding={theme.spacing(0.3)} width="inherit" height="inherit">
-              <Typography variant="h5">{movie.title}</Typography>
+              <Typography variant="h5" style={{ fontWeight: '800' }}>{movie.title}</Typography>
+              <Divider light style={{ marginTop: theme.spacing(1), marginBottom: theme.spacing(1) }} />
               <Box mb={2} mt={1}>
                 <Typography variant="caption">
                   Released on{' '}
