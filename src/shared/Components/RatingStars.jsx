@@ -1,9 +1,15 @@
 import { useEffect, useState } from 'react';
 import StarIcon from '@material-ui/icons/Star';
-import { makeStyles } from '@material-ui/core';
+import { Box, makeStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
+  root: {
+    fontSize: '50px',
+    [theme.breakpoints.down('md')]: {
+      fontsize: '5px',
+    },
+  },
   starIconSelected: {
     color: 'gold',
   },
@@ -12,7 +18,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const RatingStars = ({ rating, setRating }) => {
+const RatingStars = ({ rating, setRating, ...props }) => {
   const classes = useStyles();
   const amountOfStarsToRender = 5;
   const [starsState, setStarsState] = useState([]);
@@ -57,14 +63,17 @@ const RatingStars = ({ rating, setRating }) => {
     starsState.map((star, idx) => {
       return (
         <StarIcon
-          key={JSON.stringify(star)}
+          fontSize="small"
+          key={idx}
           className={classes.starIcon}
           classes={{
+            root: classes.starIcon,
             colorDisabled: classes.starIconDisabled,
             colorAction: classes.starIconSelected,
           }}
           color={star.selected ? 'action' : 'disabled'}
           onClick={(e) => handleClickStartIcon(e, star.star)}
+          {...props}
         />
       );
     })

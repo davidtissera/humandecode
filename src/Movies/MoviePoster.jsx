@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core';
+import { styled } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import RatingStars from '../shared/Components/RatingStars';
@@ -11,7 +12,7 @@ const useStyles = (props) =>
     card: {
       position: 'relative',
       height: '100%',
-      cursor: 'pointer',
+      cursor: props.clickable && 'pointer',
     },
     img: {
       position: 'relative',
@@ -19,8 +20,18 @@ const useStyles = (props) =>
     },
   }));
 
-const MoviePoster = ({ movie, CardProps, ...props }) => {
-  const classes = useStyles({ imageSrc: movie.poster_path })();
+const BottomShadowBox = styled(Box)({
+  '&:hover': {
+    background: 'linear-gradient(180deg, rgba(255,255,255,0) 54%, rgba(74,74,74,0.5) 65%, rgba(20,20,20,0.9) 90%)',
+  },
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  top: 0,
+});
+
+const MoviePoster = ({ movie, clickable, CardProps, ...props }) => {
+  const classes = useStyles({ imageSrc: movie.poster_path, clickable })();
 
   return (
     <Card
@@ -37,9 +48,10 @@ const MoviePoster = ({ movie, CardProps, ...props }) => {
         height="100%"
         {...props}
       />
-      <Box position="absolute" bottom={10} right={10}>
+      <Box position="absolute" bottom={10} right={10} zIndex={1000}>
         <RatingStars rating={movie.vote_average} />
       </Box>
+      {clickable && <BottomShadowBox />}
     </Card>
   );
 };
@@ -47,6 +59,7 @@ const MoviePoster = ({ movie, CardProps, ...props }) => {
 MoviePoster.propTypes = {
   movie: PropTypes.object,
   CardProps: PropTypes.object,
+  clickable: PropTypes.bool,
 };
 
 export default MoviePoster;

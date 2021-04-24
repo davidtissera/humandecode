@@ -39,6 +39,7 @@ const MoviesGridList = ({ movies }) => {
                 <MoviePoster
                   movie={movie}
                   CardProps={{ onClick: () => handleClickMovie(movie) }}
+                  clickable
                 />
               </Grid>
             ) : null

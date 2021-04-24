@@ -24,7 +24,6 @@ const useStyles = (props) =>
 
 const GenresBreadCrumbs = ({ genres }) => {
   if (!genres || genres.length === 0) return null;
-  console.log(genres);
   return (
     <Breadcrumbs separator="·" aria-label="breadcrumb">
       {genres.map((genre) => (
