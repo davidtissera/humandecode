@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 const apiKey = '666af153f2440476bfb30040d7b9d152';
-const imagePath = 'https://image.tmdb.org/t/p/w500';
+const imageBaseUrl = 'https://image.tmdb.org/t/p/w500';
 
 export const appendQueryParams = (queryParams = {}) => {
   const formattedQueryParameters = Object.entries(queryParams).map(
@@ -74,4 +74,4 @@ const useSetApiDataToState = ({ promise, deps, timeoutMsecs }) => {
   return [state, setState];
 };
 
-export { getData, useSetApiDataToState, imagePath };
+export { getData, useSetApiDataToState, imageBaseUrl };
