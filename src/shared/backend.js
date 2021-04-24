@@ -50,7 +50,7 @@ const getData = async ({ url, queryParams }) => {
 const useSetApiDataToState = ({ promise, deps = [], timeoutMsecs }) => {
   const initialState = {
     data: [],
-    loading: false,
+    loading: true,
     error: '',
   };
   const [state, setState] = useState(initialState);

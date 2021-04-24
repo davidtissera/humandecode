@@ -22,7 +22,7 @@ const MoviesGridList = ({ movies }) => {
 
   return (
     <>
-      <Slide in={showMovies} timeout={1200}>
+      <Slide in={showMovies} timeout={1200} direction="right">
         <Grid container spacing={2}>
           {movies.map((movie, idx) =>
             movie.poster_path && showMovies ? (

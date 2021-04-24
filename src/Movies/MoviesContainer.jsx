@@ -73,7 +73,7 @@ const Movies = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              label="Search..."
+              label="Search your favourite movie..."
               placeholder="Titles, persons, genres..."
               variant="filled"
               InputProps={{

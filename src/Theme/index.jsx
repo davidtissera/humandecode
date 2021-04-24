@@ -5,6 +5,18 @@ import grey from '@material-ui/core/colors/grey';
 const defaultTheme = createMuiTheme();
 
 const theme = createMuiTheme({
+  overrides: {
+    MuiCssBaseline: {
+      '@global': {
+        body: {
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
+          backgroundColor: '#202020',
+
+        },
+      },
+    }
+  },
   palette: {
     primary: {
       main: orange[500],
@@ -15,6 +27,7 @@ const theme = createMuiTheme({
     },
   },
   typography: {
+    fontFamily: 'Questrial',
     h5: {
       fontWeight: 700,
       [defaultTheme.breakpoints.down('sm')]: {

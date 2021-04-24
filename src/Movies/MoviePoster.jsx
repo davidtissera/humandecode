@@ -13,6 +13,7 @@ const useStyles = (props) =>
       position: 'relative',
       height: '100%',
       cursor: props.clickable && 'pointer',
+      zIndex: 9999,
     },
     img: {
       position: 'relative',
@@ -21,8 +22,9 @@ const useStyles = (props) =>
   }));
 
 const BottomShadowBox = styled(Box)({
+  background: 'linear-gradient(180deg, rgba(74,74,74,0.0) 50%, rgba(20,20,20,0.3) 100%)',
   '&:hover': {
-    background: 'linear-gradient(180deg, rgba(255,255,255,0) 54%, rgba(74,74,74,0.5) 65%, rgba(20,20,20,0.9) 90%)',
+    background: 'linear-gradient(180deg, rgba(74,74,74,0.0) 50%, rgba(20,20,20,0.5) 90%)',
   },
   position: 'absolute',
   width: '100%',
@@ -48,10 +50,10 @@ const MoviePoster = ({ movie, clickable, CardProps, ...props }) => {
         height="100%"
         {...props}
       />
-      <Box position="absolute" bottom={10} right={10} zIndex={1000}>
+      <Box position="absolute" bottom={10} right={10} zIndex={10000}>
         <RatingStars rating={movie.vote_average} />
       </Box>
-      {clickable && <BottomShadowBox />}
+      <BottomShadowBox />
     </Card>
   );
 };
