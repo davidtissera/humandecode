@@ -20,6 +20,10 @@ $ git clone git@github.com:davidtissera1/humandecode.git // SSH
 ```code
 $ cd humandecode // e.g: ~/Desktop/humandecode
 ```
+> Install dependencies (this could take a while)
+```code
+$ npm install
+```
 > And finally type this command and hit enter to start the App.
 ```code
 $ npm start
